@@ -1,0 +1,41 @@
+<modification>
+	<id>Stock autoupdater</id>
+	<version>1.7.5</version>
+	<vqmver>2.X</vqmver>
+	<author>Support: razvan@teamweb.ro</author>
+
+	<file name="admin/language/english/common/header.php">
+		<operation error="skip">
+			<search position="after"><![CDATA[= 'Order Totals';]]></search>
+			<add><![CDATA[
+				$_['text_newsman_import']                   = 'Newsman Subscribers Sync';
+			]]></add>
+		</operation>
+	</file>
+
+	<file name="admin/controller/common/header.php">
+		<operation error="skip">
+			<search position="after"><![CDATA[$this->data['text_total'] = $this->language->get('text_total');]]></search>
+			<add><![CDATA[
+				$this->data['text_newsman_import'] = $this->language->get('text_newsman_import');
+			]]></add>
+		</operation>
+
+		<operation error="skip">
+			<search position="after"><![CDATA[$this->data['total'] = $this->url->link('extension/total', 'token=' . $this->session->data['token'], 'SSL');]]></search>
+			<add><![CDATA[
+				$this->data['newsman_import'] = $this->url->link('module/newsman_import', 'token=' . $this->session->data['token'], 'SSL');
+			]]></add>
+		</operation>
+	</file>
+
+	<file name="admin/view/template/common/header.tpl">
+		<operation error="skip">
+			<search position="before"><![CDATA[<li id="sale"><a class="top"><?php echo $text_sale; ?></a>]]></search>
+			<add><![CDATA[
+				<li><a class="top" href="<?php echo $newsman_import; ?>"><?php echo $text_newsman_import; ?></a></li>
+			]]></add>
+		</operation>
+	</file>
+
+</modification>
