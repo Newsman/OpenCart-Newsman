@@ -101,11 +101,19 @@ class ControllerModuleNewsmanImport extends Controller {
 				if($this->request->post['import_type'] == 2)
 					$settings['segments'] = $this->request->post['segments'];
 				if($this->request->post['sync'] == 1)
-					$this->session->data['sync'] =1;
+					$this->session->data['sync'] = 1;
 				if(!isset($settings['last_data_time']))
 					$settings['last_data_time'] = date("Y-m-d H:i:s", strtotime('-2 hour'));
-				$this->model_setting_setting->editSetting($this->_name, $settings);
-				$this->data['success'] = $this->language->get('text_success');
+				if($this->request->post['reset'] == '1') {
+					$this->model_setting_setting->deleteSetting($this->_name, $settings);
+					$newSettings = array();
+					$newSettings['last_data_time'] = $settings['last_data_time'];
+					$this->model_setting_setting->editSetting($this->_name, $newSettings);
+				}
+				else {
+					$this->model_setting_setting->editSetting($this->_name, $settings);
+					$this->data['success'] = $this->language->get('text_success');
+				}
 				$this->redirect($this->url->link('module/' . $this->_name, 'token=' . $this->session->data['token'], 'SSL'));
 			}
 		}

@@ -101,6 +101,8 @@
 					<p><?php echo $text_sync; ?></p>
 					<a onclick="sync();" class="button"><span><?php echo $button_sync_now; ?></span></a>
 					<input type="hidden" value="0" name="sync" id="sync">
+					<input type="hidden" value="0" name="reset" id="reset"><br><br>
+					<a onclick="document.getElementById('reset').value = '1';try_submit();" class="button"><span><?php echo $button_reset; ?></span></a><br>
 					<p><?php echo $text_autosync; ?><br><a href="#">http://<?php echo $_SERVER['SERVER_NAME']; ?>/index.php?route=module/newsman_import</a></p>
 				</div>
 				<?php } ?>
@@ -132,15 +134,20 @@
 						connected = 1;
 						var str = '<option value="">None</option>';
 						var i=0;
+						var submit = 0;
 						for(i=0; i<json.length; i++) {
-							if(json[i].list_id == list_id)
+							if(json[i].list_id == list_id) {
 								str += "<option selected value='" + json[i].list_id + "'>" + json[i].list_name + "</option>";
+								submit = 1;
+							}
 							else
 								str += "<option value='" + json[i].list_id + "'>" + json[i].list_name + "</option>";
 						}
 						document.getElementById('list').innerHTML = str;
 						document.getElementById('lists_container').style.display = "block";
 						document.getElementById('notifications').innerHTML = '<div class="success"><?php echo $text_connected; ?></div>';
+						if(submit == 1)
+							try_submit();
 					}
 					else
 						document.getElementById('notifications').innerHTML = '<div class="warning"><?php echo $error_not_connected; ?></div>';
@@ -154,6 +161,9 @@
 			});
 		}
 	}
+	<?php if(isset($settings['list_id'])) { ?>
+	connectNewsman();
+	<?php } ?>
 <?php } else if($step == 2) { ?>
 	var step=2;
 	var segments_loaded = 0;
