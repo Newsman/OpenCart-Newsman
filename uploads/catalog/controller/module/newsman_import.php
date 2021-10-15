@@ -60,12 +60,17 @@ class ControllerModuleNewsmanImport extends Controller {
                                 "id" => $prod['product_id'],
                                 "name" => $prod['name'],
                                 "quantity" => $prod['quantity'],
-                                "price" => $prod['price']
+                                "price" => $prod['price'],
+                                "price_old" => 0,
+                                "image_url" => "",
+                                "url" => ""
                             );
                         }
 
                         $ordersObj[] = array(
                             "order_no" => $item["order_id"],
+                            "date" => "",
+                            "status" => "",
                             "lastname" => $item["firstname"],
                             "firstname" => $item["firstname"],
                             "email" => "",
@@ -100,7 +105,10 @@ class ControllerModuleNewsmanImport extends Controller {
                             "id" => $prod["product_id"],
                             "name" => $prod["model"],
                             "stock_quantity" => $prod["quantity"],
-                            "price" => $prod["price"]
+                            "price" => $prod["price"],
+                            "price_old" => 0,
+                            "image_url" => "",
+                            "url" => ""
                         );
                     }
 
@@ -149,6 +157,17 @@ class ControllerModuleNewsmanImport extends Controller {
                     return;
 
                     break;
+                case "version.json":
+                    $version = array(
+                    "version" => "Opencart 1.x"
+                    );
+
+                    $this->response->addHeader('Content-Type: application/json');
+                            $this->response->setOutput(json_encode($version, JSON_PRETTY_PRINT));
+                    return;
+            
+                    break;
+
             }
         } else {
             $this->response->addHeader('Content-Type: application/json');
