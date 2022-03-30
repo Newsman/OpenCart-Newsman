@@ -16,6 +16,11 @@ class ControllerModuleNewsmanImport extends Controller {
         $settings = (array)$this->model_setting_setting->getSetting('newsman_import');
         $_apikey = $settings["api_key"];
 
+        $getCart = (empty($_GET["getCart"]) ? "" : $_GET["getCart"]);
+        if (!empty($_GET["getCart"])) {
+            $this->getCart();
+        }
+
         $cron = (empty($_GET["cron"]) ? "" : $_GET["cron"]);
         if (!empty($_GET["cron"])) {
             if ($this->model_module_newsman_import->import_to_newsman())
@@ -25,6 +30,44 @@ class ControllerModuleNewsmanImport extends Controller {
             $this->newsmanFetchData($_apikey);
         }
 	}
+
+    public function getCart(){
+
+        $cart = $this->session->data["cart"];
+
+        $this->load->model('catalog/product');
+
+        $productsCart = array();
+
+        if(!empty($cart))
+        {
+            foreach($cart as $key => $item){
+                $key = str_replace("::", "", $key);
+                
+                $productsCart[] = $this->model_catalog_product->getProduct($key);                
+            }
+        }
+                
+        $prod = array();
+
+        foreach ($productsCart as $key => $cart_item ) {
+
+            $prod[] = array(
+                "id" => $cart_item['product_id'],
+                "name" => $cart_item["name"],
+                "price" => $cart_item["price"],						
+                "quantity" => $cart_item['quantity']
+            );							
+                                    
+         }			
+
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($prod, JSON_PRETTY_PRINT);
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($prod, JSON_PRETTY_PRINT));
+        exit;
+    }
 
     public function newsmanFetchData($_apikey)
     {

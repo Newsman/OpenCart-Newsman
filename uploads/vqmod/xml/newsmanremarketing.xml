@@ -1,0 +1,63 @@
+<modification>
+	<id><![CDATA[Newsman Remarketing mod v0.4]]></id>
+	<version><![CDATA[0.4]]></version>
+	<vqmver><![CDATA[2.1.6]]></vqmver>
+	<author><![CDATA[Lucian / newsman.com]]></author>
+	<file name="catalog/controller/common/footer.php">
+		<operation>
+			<search position="before" offset="1"><![CDATA[$this->render(]]></search>
+			<add><![CDATA[	
+
+		$route = '';
+		if (isset($this->request->get['route']))
+		{
+			$route = (string)$this->request->get['route'];
+		}
+
+		if($route != 'checkout/success')
+		{
+			$this->load->model('tool/newsmanremarketing');
+			$this->data['newsmanremarketing_footer_text'] = $this->model_tool_newsmanremarketing->getFooterText();	
+		}
+			]]></add>
+		</operation>
+	</file>
+	<file name="catalog/controller/checkout/success.php">
+		<operation>
+			<search position="after"><![CDATA[function index() {]]></search>
+			<add><![CDATA[				
+		if ( isset($this->session->data['order_id']) && ( ! empty($this->session->data['order_id']))  ) {
+			$this->session->data['last_order_id'] = $this->session->data['order_id'];
+
+			$this->load->model('tool/newsmanremarketing');
+			$this->data['newsmanremarketing_footer_text'] = $this->model_tool_newsmanremarketing->getFooterText($this->session->data['last_order_id']);
+			$this->session->data["newsmanremarketing_footer_text"] = $this->data['newsmanremarketing_footer_text'];
+		}	
+			]]></add>
+		</operation>
+	</file>
+	<file name="catalog/view/theme/*/template/common/footer.tpl">
+		<operation>
+			<search position="before" offset="1"><![CDATA[</body>]]></search>
+			<add><![CDATA[	
+
+				<?php
+					$route = '';
+					if (isset($this->request->get['route']))
+					{
+						$route = (string)$this->request->get['route'];
+					}			
+				?>
+
+				<?php if ( isset($this->session->data['newsmanremarketing_footer_text']) && ( ! empty($this->session->data['newsmanremarketing_footer_text'])) && $route == 'checkout/success' ) {?>
+					<?php echo $this->session->data["newsmanremarketing_footer_text"]; ?>
+					$this->session->data['newsmanremarketing_footer_text'] = '';
+				<?php }else{ ?>
+					<?php echo $newsmanremarketing_footer_text; ?>
+				<?php } ?>
+			]]></add>
+		</operation>
+	</file>
+</modification>
+
+

@@ -21,6 +21,11 @@ You can also choose to ignore the group or to upload the group members but inclu
 For the segments to show up in this form, you need to set them up in your Newsman account first.
 ![](https://raw.githubusercontent.com/Newsman/OpenCart-Newsman/master/assets/mapping-screen-opencart.png)
 
+3. VQMOD Installer is required for Newsman Remarketing
+
+Follow installation instructions
+https://www.opencart.com/index.php?route=marketplace/extension/info&extension_id=22378
+
 For the automatic synchronization to work, you must setup a webcron to run this URL:
-`http://yourshop/index.php?route=module/newsman_import`
+`http://yourshop/index.php?route=module/newsman_import&cron=true`
 
