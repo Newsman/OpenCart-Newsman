@@ -42,9 +42,13 @@ class ControllerModuleNewsmanImport extends Controller {
         if(!empty($cart))
         {
             foreach($cart as $key => $item){
+                
                 $key = str_replace("::", "", $key);
                 
-                $productsCart[] = $this->model_catalog_product->getProduct($key);                
+                $_prod = $this->model_catalog_product->getProduct($key); 
+                $_prod["cQuantity"] = $item;
+
+                $productsCart[] = $_prod;            
             }
         }
                 
@@ -56,7 +60,7 @@ class ControllerModuleNewsmanImport extends Controller {
                 "id" => $cart_item['product_id'],
                 "name" => $cart_item["name"],
                 "price" => $cart_item["price"],						
-                "quantity" => $cart_item['quantity']
+                "quantity" => $cart_item['cQuantity']
             );							
                                     
          }			
