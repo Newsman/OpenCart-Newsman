@@ -3,7 +3,7 @@
 /**
  * Newsman Newsletter Sync
  *
- * @author Teamweb <razvan@teamweb.ro>
+ * @author Teamweb <razvan@teamweb.ro>, Newsman Lucian
  */
 class ControllerModuleNewsmanImport extends Controller {
 
@@ -83,6 +83,8 @@ class ControllerModuleNewsmanImport extends Controller {
 		$this->load->model('setting/setting');
 		$this->load->model('module/newsman_import');
 
+		$this->isOauth($this->data);
+
 		$this->data['step'] = 1;
 		if( $this->request->server['REQUEST_METHOD'] == 'POST' ) {
 			if($this->request->post['step']=="2") {
@@ -133,6 +135,134 @@ class ControllerModuleNewsmanImport extends Controller {
 		);
 
 		$this->response->setOutput($this->render());
+	}
+
+	public function isOauth(&$data){
+		$this->load->model('setting/setting');
+		$this->load->model('module/newsman_import');
+
+		$settings = (array) $this->model_setting_setting->getSetting("newsman_import");
+
+		if(empty($settings['api_key']))
+		{
+			$data["isOauth"] = true;
+		}
+		else{
+			$data["isOauth"] = false;
+		}
+
+		$data["oauthUrl"] = "https://newsman.app/admin/oauth/authorize?response_type=code&client_id=nzmplugin&nzmplugin=Opencart&scope=api&redirect_uri=https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
+
+		//oauth processing
+
+		$error = "";
+		$dataLists = array();
+		$data["oauthStep"] = 1;
+		$viewState = array();
+
+		if(!empty($_GET["error"])){
+			switch($error){
+				case "access_denied":
+					$error = "Access is denied";
+					break;
+				case "missing_lists":
+					$error = "There are no lists in your NewsMAN account";
+					break;
+			}
+		}else if(!empty($_GET["code"])){
+
+			$authUrl = "https://newsman.app/admin/oauth/token";
+
+			$code = $_GET["code"];
+
+			$redirect = "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+
+			$body = array(
+				"grant_type" => "authorization_code",
+				"code" => $code,
+				"client_id" => "nzmplugin",
+				"redirect_uri" => $redirect
+			);
+			
+			$ch = curl_init($authUrl);
+			
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+			
+			$response = curl_exec($ch);
+			
+			if (curl_errno($ch)) {
+				$error .= 'cURL error: ' . curl_error($ch);
+			}
+			
+			curl_close($ch);
+			
+			if ($response !== false) {
+
+				$response = json_decode($response);
+
+				$data["creds"] = json_encode(array(
+					"newsman_userid" => $response->user_id,
+					"newsman_apikey" => $response->access_token
+					)
+				);
+
+				foreach($response->lists_data as $list => $l){
+					$dataLists[] = array(
+						"id" => $l->list_id,
+						"name" => $l->name
+					);
+				}	
+
+				$data["dataLists"] = $dataLists;
+
+				$data["oauthStep"] = 2;
+			} else {
+				$error .= "Error sending cURL request.";
+			}  
+		}
+
+		if(!empty($_POST["oauthstep2"]) && $_POST['oauthstep2'] == 'Y')
+		{
+			if(empty($_POST["newsman_list"]) || $_POST["newsman_list"] == 0)
+			{
+				$step = 1;
+			}
+			else
+			{
+				$creds = stripslashes($_POST["creds"]);
+				$creds = html_entity_decode($creds);
+				$creds = json_decode($creds, true);
+
+				$this->load->model('module/newsman_import');
+				$client = $this->model_module_newsman_import->getNewsmanClient($creds["newsman_userid"], $creds["newsman_apikey"]);
+				$ret = $client->remarketing->getSettings($_POST["newsman_list"]);
+
+				$remarketingId = $ret["site_id"] . "-" . $ret["list_id"] . "-" . $ret["form_id"] . "-" . $ret["control_list_hash"];
+
+				//set feed
+				$url = "https://" . $_SERVER['SERVER_NAME'] . "/?newsman=products.json&apikey=" . $creds["newsman_apikey"];		
+
+				try{
+					$ret = $client->feeds->setFeedOnList($_POST["newsman_list"], $url, $_SERVER['SERVER_NAME'], "NewsMAN");	
+				}
+				catch(Exception $ex)
+				{			
+					//the feed already exists
+				}
+
+				$settings = (array) $this->model_setting_setting->getSetting($this->_name);
+				$settings['list_id'] = $_POST["newsman_list"];
+				$settings['api_key'] = $creds["newsman_apikey"];
+				$settings['user_id'] = $creds["newsman_userid"];
+				$this->model_setting_setting->editSetting($this->_name, $settings);
+
+				$settings = (array) $this->model_setting_setting->getSetting($this->_name);
+				$settings['remarketing_id'] = $remarketingId;
+				$this->model_setting_setting->editSetting("newsmanremarketing", $settings);
+			}
+		}
 	}
 
 	/**

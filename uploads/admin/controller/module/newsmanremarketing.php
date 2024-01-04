@@ -96,6 +96,10 @@ class ControllerModuleNewsmanremarketing extends Controller
 
 		$this->response->setOutput($this->render());
 	}
+
+	public function isOauth($insideOauth = false){
+		$this->url->link('module/newsman_import', 'token=' . $this->session->data['token'], 'SSL');
+	}
 	
 	/**
 	 * Check the credentials of the user

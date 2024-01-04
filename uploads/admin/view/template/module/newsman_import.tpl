@@ -26,6 +26,83 @@
 			</div>
 		</div>
 
+		<?php if($isOauth) { ?>
+		<div id="contentOauth">
+
+			<!--oauth step-->
+			<?php if($oauthStep == 1) { ?>
+			<form method="post" enctype="multipart/form-data">
+			<input type="hidden" name="newsman_oauth" value="Y"/>
+			<input type="hidden" name="step" value="1"/>
+			<table class="form-table newsmanTable newsmanTblFixed newsmanOauth">
+				<tr>
+					<td>
+						<p class="description"><b>Connect your site with NewsMAN for:</b></p>
+					</td>
+				</tr>
+                <tr>
+					<td>
+						<p class="description">- Subscribers Sync</p>
+					</td>
+				</tr>
+                <tr>
+					<td>
+						<p class="description">- Ecommerce Remarketing</p>
+					</td>
+				</tr>
+                <tr>
+					<td>
+						<p class="description">- Create and manage forms</p>
+					</td>
+				</tr>
+                <tr>
+					<td>
+						<p class="description">- Create and manage popups</p>
+					</td>
+				</tr>
+                <tr>
+					<td>
+						<p class="description">- Connect your forms to automation</p>
+					</td>
+				</tr>
+			</table>	
+			
+			<div style="padding-top: 5px;">
+				<a style="background: #ad0100" href="<?php echo $oauthUrl; ?>" class="button button-primary">Login with NewsMAN</a>
+			</div>
+			</form>
+
+			<!--List step-->
+			<?php } else if($oauthStep == 2) { ?>
+
+			<form method="post" enctype="multipart/form-data">
+			<input type="hidden" name="oauthstep2" value="Y"/>
+			<input type="hidden" name="step" value="1"/>
+			<input type="hidden" name="creds" value='<?php echo htmlspecialchars($creds, ENT_QUOTES, "UTF-8"); ?>' />
+			<table class="form-table newsmanTable newsmanTblFixed newsmanOauth">
+			<tr>
+				<td>
+					<select name="newsman_list" id="">
+						<option value="0">-- select list --</option>
+						<?php foreach ($dataLists as $l)
+						{ ?>
+							<option
+								value="<?php echo $l['id'] ?>"><?php echo $l['name']; ?></option>
+						<?php } ?>
+					</select>
+				</td>
+			</tr>
+			</table>	
+			
+			<div style="padding-top: 5px;">
+				<button type="submit" style="background: #ad0100" class="button button-primary">Save</a>
+			</div>
+			</form>
+
+			<?php } ?>
+
+		</div>
+		<?php } else { ?>
 		<div class="content">
 			<?php if(isset($queries)) { ?>
 				<p><img src="view/image/loading.gif" /> <span id="info"></span></p>
@@ -109,6 +186,8 @@
 			</form>
 			<?php } ?>
 		</div>
+		<!--else if not oauth-->
+		<?php } ?>
 	</div>
 </div>
 <script type="text/javascript"><!--
