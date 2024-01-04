@@ -17,8 +17,8 @@ Manual installation:
 
 1. The process is automated, login with Newsman via Oauth and the settings will get automatically filled based on your selection
 
-![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/oauth1.png)
-![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/oauth1.png)
+![image](https://raw.githubusercontent.com/Newsman/OpenCart-Newsman/master/assets/oauth1.png)
+![image](https://raw.githubusercontent.com/Newsman/OpenCart-Newsman/master/assets/oauth1.png)
 
 (Optional)
 2. Fill in your Newsman API KEY and User ID and click connect
