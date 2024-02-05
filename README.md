@@ -4,7 +4,7 @@
 This is the easiest way to connect your Shop with [Newsman](https://www.newsman.com).
 Generate an API KEY in your [Newsman](https://www.newsman.com) account, install this plugin and you will be able to sync your shop customers and newsletter subscribers with Newsman list / segments.
 
-![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/newsmanBr.jpg)
+![image](https://raw.githubusercontent.com/Newsman/OpenCart-Newsman/master/assets/newsmanBr.jpg)
 
 # Installation
 Manual installation:
