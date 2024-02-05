@@ -6,14 +6,14 @@ Generate an API KEY in your [Newsman](https://www.newsman.com) account, install 
 
 ![image](https://raw.githubusercontent.com/Newsman/WP-Plugin-NewsmanApp/master/assets/newsmanBr.jpg)
 
-#Installation
+# Installation
 Manual installation:
 1.  Copy contents of the uploads folder and paste to your opencart root directory
 2.	Give priveleges to your user in admin->System->Users->User Groups
 3.  Go to admin->Modules and then install Newsman Newsletter Sync module
 4.  After installation edit the Newsman Newsletter Sync module
 
-#Setup
+# Setup
 
 1. The process is automated, login with Newsman via Oauth and the settings will get automatically filled based on your selection
 
@@ -30,7 +30,7 @@ You can also choose to ignore the group or to upload the group members but inclu
 For the segments to show up in this form, you need to set them up in your Newsman account first.
 ![](https://raw.githubusercontent.com/Newsman/OpenCart-Newsman/master/assets/mapping-screen-opencart.png)
 
-3. VQMOD Installer is required for Newsman Remarketing
+4. VQMOD Installer is required for Newsman Remarketing
 
 Follow installation instructions
 https://www.opencart.com/index.php?route=marketplace/extension/info&extension_id=22378
@@ -40,7 +40,7 @@ For the automatic synchronization to work, you must setup a webcron to run this 
 
 # Description
 
-With the NewsMAN Plugin, you have the power to streamline your email and SMS marketing efforts. This tool enables you to manage subscription forms, contact lists, newsletters, email campaigns, SMS functionalities, smart automations, detailed analytics, and ensure reliable transactional emails - all accessed through the NewsMAN platform, providing you with enhanced marketing capabilities.
+With the NewsMAN Plugin for Opencart 1.x, you have the power to streamline your email and SMS marketing efforts. This tool enables you to manage subscription forms, contact lists, newsletters, email campaigns, SMS functionalities, smart automations, detailed analytics, and ensure reliable transactional emails - all accessed through the NewsMAN platform, providing you with enhanced marketing capabilities.
 
 # Subscription Forms & Pop-ups:
 
