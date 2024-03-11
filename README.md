@@ -1,8 +1,8 @@
 # OpenCart - Newsman Newsletter Sync
-[Newsman](https://www.newsman.com) plugin for OpenCart. Sync your OpenCart customers / subscribers to Newsman list / segments.
+[NewsMAN](https://www.newsman.com) plugin for OpenCart. Sync your OpenCart customers / subscribers to Newsman list / segments.
 
-This is the easiest way to connect your Shop with [Newsman](https://www.newsman.com).
-Generate an API KEY in your [Newsman](https://www.newsman.com) account, install this plugin and you will be able to sync your shop customers and newsletter subscribers with Newsman list / segments.
+This is the easiest way to connect your Shop with Newsman.
+Generate an API KEY in your Newsman account, install this plugin and you will be able to sync your shop customers and newsletter subscribers with Newsman list / segments.
 
 ![image](https://raw.githubusercontent.com/Newsman/OpenCart-Newsman/master/assets/newsmanBr.jpg)
 
@@ -40,54 +40,39 @@ For the automatic synchronization to work, you must setup a webcron to run this 
 
 # Description
 
-With the NewsMAN Plugin for Opencart 1.x, you have the power to streamline your email and SMS marketing efforts. This tool enables you to manage subscription forms, contact lists, newsletters, email campaigns, SMS functionalities, smart automations, detailed analytics, and ensure reliable transactional emails - all accessed through the NewsMAN platform, providing you with enhanced marketing capabilities.
+Improve your Opencart 1.x experience with the user-friendly email marketing and sms NewsMAN Plugin – a tool designed to simplify the management of subscription forms, contact lists, newsletters, email campaigns, SMS functions, and analytics. All these tasks are easily handled through the intuitive NewsMAN email marketing and sms platform.
 
-# Subscription Forms & Pop-ups:
+# Subscription Forms & Pop-ups
+Design eye-catching forms and pop-ups, capturing potential leads with embedded newsletter signups or exit-intent popups.
+Keep forms consistent across devices for a seamless user experience.
+Integrate forms with automations for quick responses and welcome emails.
 
-* Create: Craft visually engaging subscription forms and pop-ups, like embedded newsletter signups or exit-intent popups, strategically capturing potential leads before they leave. Customize these forms with compelling visuals and user-friendly designs to entice visitors effectively.
+# Contact Lists & Segments
 
-* Sync: Ensure forms are consistent across multiple platforms by synchronizing them, regardless of the device used. This maintains a smooth user experience and upholds brand consistency.
+Automatically import and sync contact lists from various sources for easy data management.
+Use segmentation techniques to target specific audience segments based on demographics or behavior.
 
-* Connect to Automations: Seamlessly integrate subscription forms with automated workflows. This enables the activation of welcome emails or specific responses upon form submissions, enhancing user engagement through automated processes.
+# Email & SMS Marketing Campaigns 
 
-# Contact Lists & Segments:
+Send mass campaigns, newsletters, or promotions to a broad subscriber base effortlessly.
+Personalize campaigns for individual subscribers, addressing them by name and suggesting relevant products.
+Re-engage subscribers by resending campaigns to those who haven't opened the initial email.
 
-* Auto Import Sync: Automate the import and synchronization of contact lists from different sources such as websites, e-commerce platforms, or marketing/sales software. This streamlines data management, ensuring your contact information remains accurate and updated effortlessly.
+# Email & SMS Marketing Automation
 
-* Advanced Segmentation: Utilize demographic or behavioral segmentation techniques to better target specific audience segments. Tailor offers or promotions specific to regions based on users' interests and behaviors, enhancing the relevance of your marketing approaches.
+Automate personalized product suggestions, follow-up emails, and cart abandonment strategies.
+Address cart abandonment strategically or showcase related products to encourage finalizing purchases.
+Gather post-purchase feedback for customer satisfaction.
 
-# Marketing Campaigns (Email and SMS):
+# Ecommerce Remarketing
 
-* Mass Campaigns: Send newsletters or promotional offers to a broad subscriber base with convenience. This keeps your audience engaged with regular updates on fresh products or services.
+Reconnect with subscribers through targeted offers based on past interactions.
+Personalize interactions with exclusive offers or reminders based on user behavior or preferences.
 
-* Segmented & Personalized: Tailor campaigns to resonate individually with subscribers by personalizing content. Address subscribers by name or suggest products aligned with their preferences or past interactions, ensuring personalized engagement.
+# SMTP Transactional Emails
 
-* Resend to Unopened: Re-engage subscribers effectively by resending campaigns to those who haven't opened the initial email. Modify content to enhance interaction and expand reach, fostering increased engagement.
+Ensure prompt and reliable delivery of critical messages, such as order confirmations or shipping notifications, through SMTP.
+Extended Email and SMS Statistics
+Gain insights into open rates, click-through rates, conversion rates, and overall campaign performance for informed decision-making.
 
-* A/B Tests: Improve campaign performance by experimenting with various elements such as subject lines, content formats, or visuals through A/B tests. Identify the most effective strategies to refine your approach.
-
-* Fully Automated: Optimize campaign performance through experimentation with various elements like subject lines, content formats, or visuals to identify the most effective strategies.
-
-# Marketing Automation (Email & SMS):
-
-* E-commerce & Non-E-commerce: Automate personalized product suggestions or follow-up emails based on user behavior, enhancing user engagement and providing customized experiences.
-
-* Cart Abandonment & Product Views: Strategically address cart abandonment or showcase related products to encourage users to finalize their purchase journey, reclaiming potential sales opportunities.
-
-* Order Review & Post-Purchase: Gather post-purchase feedback to bolster relationships and refine products/services based on valuable testimonials, strengthening customer satisfaction.
-
-* Extensive Automation Flows: Develop comprehensive workflows triggered by specific user actions. Guide users through diverse touchpoints in their journey, such as onboarding sequences or re-engagement strategies, ensuring a fluid user experience.
-
-# Ecommerce Remarketing:
-
-* Efficient Targeting: Reconnect with subscribers by sending targeted offers or reminders based on their past interactions, amplifying the effectiveness of re-engagement strategies.
-
-* Custom Flows: Personalize interactions by providing exclusive offers or reminders based on users' behavior or preferences, fostering a sense of exclusivity and engagement.
-
-# SMTP Transactional Email & SMS:
-
-* Transactional Emails: Guarantee the prompt and reliable delivery of critical messages, such as order confirmations or shipping notifications, through SMTP. This ensures users consistently receive important communications without delay.
-
-# Extended Email and SMS Statistics:
-
-* Comprehensive Insights: Gain comprehensive insights into open rates, click-through rates, conversion rates, and overall campaign performance. These detailed analytics empower data-driven decision-making, refining future campaigns and enhancing overall performance.
+The NewsMAN Plugin simplifies your marketing efforts without hassle, making it easier for you to connect with your audience effectively.
