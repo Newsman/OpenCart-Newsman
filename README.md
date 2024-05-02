@@ -1,8 +1,8 @@
 # OpenCart - Newsman Newsletter Sync
-[NewsMAN](https://www.newsman.com) plugin for OpenCart. Sync your OpenCart customers / subscribers to Newsman list / segments.
+[NewsMAN](https://www.newsman.com) plugin for OpenCart. Sync your OpenCart customers / subscribers to NewsMAN list / segments.
 
-This is the easiest way to connect your Shop with Newsman.
-Generate an API KEY in your Newsman account, install this plugin and you will be able to sync your shop customers and newsletter subscribers with Newsman list / segments.
+This is the easiest way to connect your Shop with NewsMAN.
+Generate an API KEY in your NewsMAN account, install this plugin and you will be able to sync your shop customers and newsletter subscribers with NewsMAN list / segments.
 
 ![image](https://raw.githubusercontent.com/Newsman/OpenCart-Newsman/master/assets/newsmanBr.jpg)
 
@@ -10,27 +10,27 @@ Generate an API KEY in your Newsman account, install this plugin and you will be
 Manual installation:
 1.  Copy contents of the uploads folder and paste to your opencart root directory
 2.	Give priveleges to your user in admin->System->Users->User Groups
-3.  Go to admin->Modules and then install Newsman Newsletter Sync module
-4.  After installation edit the Newsman Newsletter Sync module
+3.  Go to admin->Modules and then install NewsMAN Newsletter Sync module
+4.  After installation edit the NewsMAN Newsletter Sync module
 
 # Setup
 
-1. The process is automated, login with Newsman via Oauth and the settings will get automatically filled based on your selection
+1. The process is automated, login with NewsMAN via Oauth and the settings will get automatically filled based on your selection
 
 ![image](https://raw.githubusercontent.com/Newsman/OpenCart-Newsman/master/assets/oauth1.png)
 ![image](https://raw.githubusercontent.com/Newsman/OpenCart-Newsman/master/assets/oauth2.png)
 
 (Optional)
-2. Fill in your Newsman API KEY and User ID and click connect
+2. Fill in your NewsMAN API KEY and User ID and click connect
 ![](https://raw.githubusercontent.com/Newsman/OpenCart-Newsman/master/assets/api-setup-screen-opencart.png)
 
 3. Choose destination segments for your newsletter subscribers and customer groups
-All your groups will be listed and you can select the Newsman Segment to map to.
+All your groups will be listed and you can select the NewsMAN Segment to map to.
 You can also choose to ignore the group or to upload the group members but include them in any segment.
-For the segments to show up in this form, you need to set them up in your Newsman account first.
+For the segments to show up in this form, you need to set them up in your NewsMAN account first.
 ![](https://raw.githubusercontent.com/Newsman/OpenCart-Newsman/master/assets/mapping-screen-opencart.png)
 
-4. VQMOD Installer is required for Newsman Remarketing
+4. VQMOD Installer is required for NewsMAN Remarketing
 
 Follow installation instructions
 https://www.opencart.com/index.php?route=marketplace/extension/info&extension_id=22378
