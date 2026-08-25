@@ -1,0 +1,282 @@
+<script{{ tag_attrib }}>
+    _nzm.run('require', 'ec');
+
+    (function () {
+        var isProd = true;
+        var nzmCartSelector = 'script[data-newsman-cart]';
+        var observerTarget = document.getElementById('cart');
+        var nzmAjaxUrl = '{{ base_url }}/index.php?route=extension/module/newsman/cart';
+
+        var nzmCartStore = (function () {
+            var key = 'nzm_last_cart';
+            var memory = null;
+            var store = null;
+            try {
+                if (window.localStorage) {
+                    window.localStorage.setItem('nzm_test', '1');
+                    window.localStorage.removeItem('nzm_test');
+                    store = window.localStorage;
+                    try {
+                        if (store.getItem(key) === null && window.sessionStorage) {
+                            var legacy = window.sessionStorage.getItem('lastCart');
+                            if (legacy !== null) {
+                                store.setItem(key, legacy);
+                            }
+                        }
+                    } catch (e) {}
+                }
+            } catch (e) {}
+            if (!store) {
+                try {
+                    if (window.sessionStorage) {
+                        store = window.sessionStorage;
+                    }
+                } catch (e) {}
+            }
+
+            return {
+                get: function () {
+                    if (!store) {
+                        return memory;
+                    }
+                    try {
+                        return store.getItem(key);
+                    } catch (e) {
+                        return memory;
+                    }
+                },
+                set: function (value) {
+                    memory = value;
+                    if (!store) {
+                        return;
+                    }
+                    try {
+                        store.setItem(key, value);
+                    } catch (e) {}
+                }
+            };
+        })();
+
+        function nzmConfirmReported(hash) {
+            if (!hash) {
+                return;
+            }
+            try {
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', nzmAjaxUrl, true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.send('reported_hash=' + encodeURIComponent(hash));
+            } catch (e) {}
+        }
+
+        function readPayload() {
+            var node = null;
+            if (observerTarget) {
+                node = observerTarget.querySelector(nzmCartSelector);
+            }
+            if (!node) {
+                node = document.querySelector(nzmCartSelector);
+            }
+            if (!node) {
+                return null;
+            }
+            var payload = {
+                products: [],
+                hash: node.getAttribute('data-newsman-cart-hash') || '',
+                reported: node.getAttribute('data-newsman-cart-reported') === '1'
+            };
+            var text = (node.textContent || '').trim();
+            if (text === '') {
+                return payload;
+            }
+            try {
+                var data = JSON.parse(text);
+                payload.products = Array.isArray(data) ? data : [];
+                return payload;
+            } catch (e) {
+                if (!isProd) {
+                    console.log('newsman remarketing: cannot parse minicart JSON');
+                }
+                return null;
+            }
+        }
+
+        function readLastCart() {
+            try {
+                var raw = nzmCartStore.get();
+                if (raw === null || raw === '') {
+                    return [];
+                }
+                var parsed = JSON.parse(raw);
+                return Array.isArray(parsed) ? parsed : [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function writeLastCart(products) {
+            try {
+                nzmCartStore.set(JSON.stringify(products));
+            } catch (e) {}
+        }
+
+        function nzmClearCart(hash) {
+            _nzm.run('ec:setAction', 'clear_cart');
+            _nzm.run('send', 'event', 'detail view', 'click', 'clearCart');
+            writeLastCart([]);
+            nzmConfirmReported(hash);
+            if (!isProd) {
+                console.log('newsman remarketing: clear cart sent');
+            }
+        }
+
+        function nzmAddToCart(products, hash) {
+            _nzm.run('ec:setAction', 'clear_cart');
+            if (!isProd) {
+                console.log('newsman remarketing: clear cart sent, add to cart function');
+            }
+            _nzm.run('send', 'event', 'detail view', 'click', 'clearCart', null, function () {
+                if (!isProd) {
+                    console.log('newsman remarketing: executing add to cart callback');
+                }
+                var sent = [];
+                for (var i = 0; i < products.length; i++) {
+                    var item = products[i];
+                    if (item && item.hasOwnProperty('id')) {
+                        _nzm.run('ec:addProduct', {
+                            id: item.id,
+                            name: item.name,
+                            price: item.price,
+                            quantity: item.quantity
+                        });
+                        sent.push({
+                            id: item.id,
+                            name: item.name,
+                            price: item.price,
+                            quantity: item.quantity
+                        });
+                    }
+                }
+                _nzm.run('ec:setAction', 'add');
+                _nzm.run('send', 'event', 'UX', 'click', 'add to cart');
+                writeLastCart(sent);
+                nzmConfirmReported(hash);
+                if (!isProd) {
+                    console.log('newsman remarketing: cart sent');
+                }
+            });
+        }
+
+        function processCart() {
+            var payload = readPayload();
+            if (payload === null) {
+                return;
+            }
+            var products = payload.products;
+            var lastCart = readLastCart();
+            var lastJson = JSON.stringify(lastCart);
+            var nextJson = JSON.stringify(products);
+
+            if (lastJson === nextJson) {
+                if (payload.hash && !payload.reported) {
+                    nzmConfirmReported(payload.hash);
+                }
+                if (!isProd) {
+                    console.log('newsman remarketing: minicart unchanged');
+                }
+                return;
+            }
+
+            if (payload.reported) {
+                writeLastCart(products);
+                if (!isProd) {
+                    console.log('newsman remarketing: cart already reported in this session, local fingerprint synced');
+                }
+                return;
+            }
+
+            if (products.length === 0) {
+                if (lastCart.length > 0) {
+                    nzmClearCart(payload.hash);
+                } else {
+                    writeLastCart([]);
+                }
+                return;
+            }
+
+            nzmAddToCart(products, payload.hash);
+        }
+
+        var scheduled = false;
+        function scheduleProcess() {
+            if (scheduled) {
+                return;
+            }
+            scheduled = true;
+            setTimeout(function () {
+                scheduled = false;
+                processCart();
+            }, 50);
+        }
+
+        function startObserver() {
+            observerTarget = document.getElementById('cart');
+            if (!observerTarget || typeof MutationObserver !== 'function') {
+                return;
+            }
+            var observer = new MutationObserver(function () {
+                scheduleProcess();
+            });
+            observer.observe(observerTarget, {
+                childList: true,
+                subtree: true,
+                characterData: true
+            });
+        }
+
+        function nzmGetCookie(name) {
+            var needle = name + '=';
+            var parts = document.cookie ? document.cookie.split(';') : [];
+            for (var i = 0; i < parts.length; i++) {
+                var p = parts[i].replace(/^\s+/, '');
+                if (p.indexOf(needle) === 0) {
+                    return p.substring(needle.length);
+                }
+            }
+            return null;
+        }
+
+        function nzmSetSessionCookie(name, value, path) {
+            document.cookie = name + '=' + value + '; path=' + path + '; SameSite=Lax';
+        }
+
+        function nzmSessionBootstrap() {
+            var cookieName = 'nzm_cart_sync';
+            var cookiePath = '{{ nzm_cookie_path|escape('js') }}';
+            if (nzmGetCookie(cookieName)) {
+                return;
+            }
+            if (nzmCartStore.get() !== null) {
+                nzmSetSessionCookie(cookieName, '1', cookiePath);
+                return;
+            }
+            var payload = readPayload();
+            if (payload !== null && payload.products.length === 0 && !payload.reported) {
+                nzmClearCart(payload.hash);
+            }
+            nzmSetSessionCookie(cookieName, '1', cookiePath);
+        }
+
+        function boot() {
+            startObserver();
+            nzmSessionBootstrap();
+            processCart();
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', boot);
+        } else {
+            boot();
+        }
+    })();
+</script>
